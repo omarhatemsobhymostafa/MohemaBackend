@@ -4,7 +4,7 @@ const fs = require('fs')
 const { dirname } = require('path')
 const app = express()
 app.use(express.json())
-const PORT = 8000
+const PORT = process.env.PORT || 8000
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
 const { error } = require('console')
@@ -17,13 +17,12 @@ app.use(cors({
     origin: 'http://localhost:3000' 
 }))
 
-mongoose.connect(process.env.DB).then(()=>{
-    console.log('\x1B[32m✔\x1B[39m','DB Connected Successfully');
-    
-}).catch((error)=>{
-    console.log('\x1B[31m✖\x1B[39m' ,'Something Went Wrong in DB Connection');
-    
-})
+mongoose.connect(process.env.DB)
+  .then(() => console.log("DB Connected"))
+  .catch(err => {
+    console.error("DB ERROR 👉", err); // مش message بس
+    process.exit(1);
+  });
 
 
 
