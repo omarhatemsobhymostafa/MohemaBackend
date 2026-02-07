@@ -6,7 +6,10 @@ const app = express()
 app.use(express.json())
 const PORT = process.env.PORT || 8000
 const mongoose = require('mongoose')
-const dotenv = require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const { error } = require('console')
 const logSymbols = require('log-symbols')
 const Week = require('./Models/WeekModel.js')
@@ -18,11 +21,9 @@ app.use(cors({
 }))
 
 mongoose.connect(process.env.DB)
-  .then(() => console.log("DB Connected"))
-  .catch(err => {
-    console.error("DB ERROR 👉", err); // مش message بس
-    process.exit(1);
-  });
+  .then(() => console.log("✅ DB Connected"))
+  .catch(err => console.error("❌ DB ERROR 👉", err));
+
 
 
 
